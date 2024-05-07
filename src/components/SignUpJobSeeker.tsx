@@ -88,6 +88,7 @@ export const SignUpJobSeeker = () => {
                 />
               </div>
             </div>
+
             <div className="row" style={{ marginBottom: "30px" }}>
               <div className="col">
                 <input
@@ -113,6 +114,38 @@ export const SignUpJobSeeker = () => {
             <div className="row" style={{ marginBottom: "30px" }}>
               <div className="col">
                 <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Number of GCSE Passes"
+                  aria-label="Number of GCSE Passes"
+                  id="gcse"
+                  required
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Job Sector"
+                  aria-label="Interested Job Sector"
+                  id="sector"
+                  required
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Professional Qualification"
+                  aria-label="Professional Qualification"
+                  id="proQualification"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row" style={{ marginBottom: "30px" }}>
+              <div className="col">
+                <input
                   type="location"
                   className="form-control"
                   placeholder="Location"
@@ -122,20 +155,20 @@ export const SignUpJobSeeker = () => {
                 />
               </div>
               <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Minimum education level"
-                  aria-label="Minimum education level"
-                  required
-                />
+                <select className="form-control" required>
+                  <option>A Levels</option>
+                  <option>O Levels</option>
+                  <option>Masters</option>
+                  <option>Undergraduate</option>
+                  <option>Secondary</option>
+                </select>
               </div>
               <div className="col">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Job preference"
-                  aria-label="Job preference"
+                  placeholder="Job Title"
+                  aria-label="Job Tile"
                   required
                 />
               </div>
@@ -146,34 +179,7 @@ export const SignUpJobSeeker = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Skill"
-                  aria-label="Skill"
-                  required
-                />
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Skill"
-                  aria-label="Skill"
-                  required
-                />
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Skill"
-                  aria-label="Skill"
-                  required
-                />
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Skill"
+                  placeholder="Enter at least 5 skills separated with comma"
                   aria-label="Skill"
                   required
                 />
@@ -257,7 +263,7 @@ export const SignUpJobSeeker = () => {
                 </button>
               </Link>
             </div>
-            <div style={{ marginLeft: "50%", marginTop: "50px" }}>
+            <div style={{ marginLeft: "50%", marginTop: "20px" }}>
               <a style={{ fontSize: "12px", color: "#4A4A4A" }}>
                 © 2024 DarLeen, Inc.
               </a>

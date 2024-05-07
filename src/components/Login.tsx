@@ -78,7 +78,7 @@ export const Login = () => {
               <a style={{ fontSize: "15px", color: "#4A4A4A" }}>
                 Don’t have an account?
               </a>
-              <Link to="/signup">
+              <Link to="/signup/jobseeker">
                 <button
                   className="btn btn-link"
                   style={{

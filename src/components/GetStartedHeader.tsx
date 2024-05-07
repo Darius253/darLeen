@@ -44,7 +44,7 @@ export const Header = () => {
             </button>
           </Link>
 
-          <Link to="/signup">
+          <Link to="/signup/jobseeker">
             <button
               type="button"
               className="btn btn-primary"

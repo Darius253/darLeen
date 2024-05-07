@@ -8,8 +8,18 @@ export const FindCandidates = () => {
     "React",
     "React",
   ];
+
+  let candidates = [1, 2, 4, 5];
+  let summary =
+    "Had 5 years of working experience as design lead. Working for a reputated com. Just saw your job application. I think i am perfect fit for all your requirements and can start from your desired time. Lets talk in details in a interview. Just saw your job application. I think i am perfect fit for all your requirements and can start from your desired time. Lets talk in details in a interview. Just saw your job application. I think i am perfect fit for all your requirements and can start from your desired time. Lets talk in details in a interview.";
+
+  // Count occurrences of the word "interview"
+  //   const countInterviews = (summary.match(/\binterview\b/g) || []).length;
+
+  //   console.log("Occurrences of 'interview':", countInterviews);
+
   return (
-    <div className="col" style={{ margin: "30px" }}>
+    <div className="row" style={{ margin: "30px" }}>
       <form>
         <div className="row">
           <div className="col">
@@ -100,7 +110,17 @@ export const FindCandidates = () => {
           </button>
         </div>
       </form>
-      <SearchResults fullName={""} skills={skills} summary={""} />
+      <div className="row justify-content-around  ">
+        {candidates.map((index) => (
+          <div className={`col d-flex justify-content-center my-3`} key={index}>
+            <SearchResults
+              fullName={"Darius Tron"}
+              skills={skills}
+              summary={summary}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

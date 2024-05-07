@@ -5,8 +5,6 @@ interface Props {
 }
 
 export const SearchResults = (props: Props) => {
-  
-
   return (
     <>
       <div
@@ -16,11 +14,10 @@ export const SearchResults = (props: Props) => {
           fontSize: "24px",
           fontWeight: "bold",
         }}
-      >
-        Here are the results:
-      </div>
+      ></div>
+
       <div
-        className="border"
+        className="border "
         style={{
           borderColor: "red",
           border: "all",
@@ -28,47 +25,52 @@ export const SearchResults = (props: Props) => {
           height: "auto",
         }}
       >
-        <div className="row align-items-start" style={{ margin: "20px" }}>
+        <div className="row align-items-start" style={{ margin: "15px" }}>
           <div
-            className="avatar text-white"
+            className=""
             style={{
               borderRadius: "100px",
               width: "60px",
               height: "60px",
               textAlign: "center",
-              backgroundColor: "gray",
+
+              border: "2px solid grey", // Specify border separately
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            CUI
+            <span style={{ color: "#0086CA" }}>
+              {props.fullName
+                .split(" ")
+                .map((word) => word.charAt(0))
+                .join("")}
+            </span>
           </div>
 
           <div className="col">
             <div
               className="col"
-              style={{ color: "#0086CA", fontSize: "15px", fontWeight: "bold" }}
+              style={{
+                color: "#0086CA",
+                fontSize: "15px",
+                fontWeight: "bold",
+              }}
             >
-              Darius Tron
+              {props.fullName}
             </div>
             <div
               className="col"
               style={{
                 color: "#4A4A4A",
                 fontSize: "13px",
-                // overflow: "clip",
+
                 height: "auto",
                 textOverflow: "ellipsis",
                 textAlign: "justify",
               }}
             >
-              Had 5 years of working experience as design lead. Working for a
-              reputated com. Just saw your job application. I think i am perfect
-              fit for all your requirements and can start from your desired
-              time. Lets talk in details in a interview. Just saw your job
-              application. I think i am perfect fit for all your requirements
-              and can start from your desired time. Lets talk in details in a
-              interview. Just saw your job application. I think i am perfect fit
-              for all your requirements and can start from your desired time.
-              Lets talk in details in a interview.
+              {props.summary}
             </div>
             <div
               className="col"
@@ -91,8 +93,8 @@ export const SearchResults = (props: Props) => {
                     width: "auto",
                     borderColor: "#E8E8E8",
                     backgroundColor: "white",
-                    borderRadius: "20px",
-                    margin: "5px",
+                    borderRadius: "17px",
+                    margin: "2px",
                     textAlign: "center",
                     padding: "8px",
                   }}
@@ -100,6 +102,29 @@ export const SearchResults = (props: Props) => {
                   {skill}
                 </div>
               ))}
+            </div>
+            <div className="col" style={{ alignItems: "end" }}>
+              <button
+                className="border"
+                style={{
+                  borderRadius: "25px",
+                  padding: "10px",
+                  backgroundColor: "#0086CA",
+                  color: "white",
+                }}
+              >
+                Shortlist Candidate
+              </button>
+              <button
+                className="border"
+                style={{
+                  borderRadius: "25px",
+                  padding: "10px",
+                  margin: "20px",
+                }}
+              >
+                View Profile
+              </button>
             </div>
           </div>
         </div>

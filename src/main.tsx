@@ -8,6 +8,7 @@ import { SignUp } from "./components/SignUp.tsx";
 import { SignUpJobSeeker } from "./components/SignUpJobSeeker.tsx";
 import { CompanyHomePage } from "./components/CompanyHomePage.tsx";
 import { JobSeekerHomePage } from "./components/JobSeekerHomePage.tsx";
+import { MatchingCandidates } from "./components/MatchingCandidates.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/homepage/jobseeker",
     element: <JobSeekerHomePage />,
+  },
+  {
+    path: "/homepage/matchingCandidates",
+    element: <MatchingCandidates />,
   },
 ]);
 
