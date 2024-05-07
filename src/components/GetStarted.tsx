@@ -8,6 +8,7 @@ function GetStarted() {
       style={{
         marginTop: "30px",
         minHeight: "100vh",
+       
       }}
     >
       <Header />

@@ -7,7 +7,10 @@ export const Header = () => {
     color: "white",
   };
   return (
-    <>
+    <nav
+      className="navbar border-bottom border-body justify-content-center"
+      style={{ width: "100%" }}
+    >
       <div className="row justify-content-center">
         <div className="col text-end">
           <button
@@ -41,7 +44,7 @@ export const Header = () => {
             </button>
           </Link>
 
-          <Link to="/login">
+          <Link to="/signup">
             <button
               type="button"
               className="btn btn-primary"
@@ -52,6 +55,6 @@ export const Header = () => {
           </Link>
         </div>
       </div>
-    </>
+    </nav>
   );
 };

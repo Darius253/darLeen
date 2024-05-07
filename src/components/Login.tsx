@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ImageSrc from "../assets/login.jpg";
 
 export const Login = () => {
@@ -29,7 +30,7 @@ export const Login = () => {
               <input
                 type="email"
                 className="form-control"
-                id="loginEmaeil"
+                id="loginEmail"
                 placeholder="Email"
                 size={36}
               />
@@ -56,35 +57,39 @@ export const Login = () => {
                 Forgot Password?
               </button>
             </div>
-            <button
-              type="submit"
-              className="btn btn"
-              style={{
-                color: "white",
-                fontSize: "16px",
-                fontWeight: "bold",
-                textAlign: "center",
-                backgroundColor: "#0086CA",
-                width: "360px",
-              }}
-            >
-              Log in
-            </button>
+            <Link to="">
+              <button
+                type="submit"
+                className="btn btn"
+                style={{
+                  color: "white",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  backgroundColor: "#0086CA",
+                  width: "360px",
+                }}
+              >
+                Log in
+              </button>
+            </Link>
 
             <div style={{ marginLeft: "90px", marginTop: "100px" }}>
               <a style={{ fontSize: "15px", color: "#4A4A4A" }}>
                 Don’t have an account?
               </a>
-              <button
-                className="btn btn-link"
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "bold",
-                  color: "#0086CA",
-                }}
-              >
-                Sign Up
-              </button>
+              <Link to="/signup">
+                <button
+                  className="btn btn-link"
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    color: "#0086CA",
+                  }}
+                >
+                  Sign Up
+                </button>
+              </Link>
             </div>
             <div style={{ marginLeft: "150px", marginTop: "50px" }}>
               <a style={{ fontSize: "12px", color: "#4A4A4A" }}>
