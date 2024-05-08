@@ -3,9 +3,22 @@ import { useState } from "react";
 import { PostedJobs } from "./PostedJobs";
 import { PostJob } from "./PostJob";
 import { Link } from "react-router-dom";
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
 export const CompanyHomePage = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const auth=getAuth();
+  const handleLogout = async () => {
+    try {
+      await auth.signOut(); // Sign out the user from Firebase Authentication
+      console.log('User successfully logged out');
+      window.location.href = '/login'; // Redirect to login page (replace with your desired URL)
+    } catch (error) {
+      const typedError = error as Error;
+      console.error('Error logging out:', typedError);
+      // Handle specific errors (optional)
+    }
+  };
   return (
     <>
       <nav
@@ -49,7 +62,7 @@ export const CompanyHomePage = () => {
               Post Job
             </span>
             <span style={{ paddingLeft: "600px" }}>
-              <Link to="/login">
+     
                
                 <button
                   style={{
@@ -60,10 +73,11 @@ export const CompanyHomePage = () => {
                     padding: "4px 10px",
                     outline: "none",
                   }}
+                  onClick={handleLogout}
                 >
                 Log Out
                 </button>
-              </Link>
+       
             </span>
           </div>
         </div>

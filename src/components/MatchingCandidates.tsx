@@ -1,17 +1,57 @@
 import { SearchResults } from "./SearchResults";
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { db } from '../firebase/BaseConfig'; // Import from firebaseConfig.js
+import { useSearchParams,Link } from 'react-router-dom';
+
+interface JobseekerData {
+    first_name:string;
+    last_name:string;
+    email:string;
+    job_title: string;
+    education_qualification?: string; // Optional property
+    location: string;
+    skills: string[];
+    experience?: string; // Optional property
+    sector: string;
+    gcsesPassed: number; // Optional property
+    yearsofexperience: number;
+    summary:string;
+}
 
 export const MatchingCandidates = () => {
-  let skills = [
-    "JavaScript",
-    "Software Engineering",
-    "React",
-    "React",
-    "React",
-  ];
+  const [searchParams] = useSearchParams();
+  const encodedJobseekerIds = searchParams.get('jobseekerIds');
+  const [jobseekers, setJobseekers] = useState<JobseekerData[]>([]); // Store fetched jobseeker data
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const auth = getAuth();
 
-  let candidates = [1, 2, 4, 5];
-  let summary =
-    "Had 5 years of working experience as design lead. Working for a reputated com. Just saw your job application. I think i am perfect fit for all your requirements and can start from your desired time. Lets talk in details in a interview. Just saw your job application. I think i am perfect fit for all your requirements and can start from your desired time. Lets talk in details in a interview. Just saw your job application. I think i am perfect fit for all your requirements and can start from your desired time. Lets talk in details in a interview.";
+  useEffect(() => {
+    const fetchJobseekers = async () => {
+      if (encodedJobseekerIds) {
+        setIsLoading(true);
+        const jobseekerIds = JSON.parse(decodeURIComponent(encodedJobseekerIds));
+        console.log(jobseekerIds);
+
+        
+
+        try {
+          const jobseekerQuery = query(collection(db, 'Jobseeker'), where('uid', 'in', jobseekerIds));
+          const querySnapshot = await getDocs(jobseekerQuery);
+          const fetchedJobseekers = querySnapshot.docs.map((doc) => ({ ...doc.data() as JobseekerData }));
+          setJobseekers(fetchedJobseekers);
+        } catch (error) {
+            setError((error as Error).message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchJobseekers();
+  }, [encodedJobseekerIds]);
 
   return (
     <div
@@ -23,12 +63,13 @@ export const MatchingCandidates = () => {
         flexDirection: "column",
       }}
     >
-      {candidates.map((index) => (
+      <Link to="/homepage/company">Back</Link>
+      {jobseekers.map((result,index) => (
         <div className="col" key={index}>
           <SearchResults
-            fullName={"Darius Tron"}
-            skills={skills}
-            summary={summary}
+            fullName={result.first_name+" "+result.last_name}
+            skills={result.skills}
+            summary={result.summary}
           />
         </div>
       ))}

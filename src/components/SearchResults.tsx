@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+
 interface Props {
   fullName: string;
   skills: string[];
@@ -115,7 +118,7 @@ export const SearchResults = (props: Props) => {
               >
                 Shortlist Candidate
               </button>
-              <button
+              <Link to=''> <button
                 className="border"
                 style={{
                   borderRadius: "25px",
@@ -124,7 +127,8 @@ export const SearchResults = (props: Props) => {
                 }}
               >
                 View Profile
-              </button>
+              </button></Link>
+             
             </div>
           </div>
         </div>

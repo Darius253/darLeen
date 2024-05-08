@@ -1,9 +1,88 @@
+import React, { useState, useEffect } from 'react';
+import { getDoc, doc } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { db } from '../firebase/BaseConfig'; // Import from firebaseConfig.js
+import { WorkHistory } from './WorkHistory';
+import { EducationHistory } from './EducationHistory';
+
+
+interface JobseekerData {
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  gcsesPassed?: number; // Assuming numerical value
+  skills: string[]; // Array of skills
+  experience?: string;
+  location?: string;
+  summary?: string;
+  role?: string;
+  educational_qualification?:string,
+  education_level?:string,
+  uid: string; // User ID from Firebase authentication
+}
 export const JobSeekerHomePage = () => {
-  const fullName = "Darius Tron";
-  const skills = ["React", "Java", "Flutter", "HTML"];
+  const [user, setUser] = useState<User | null>(null);
+  const [jobseekerData, setJobseekerData] = useState<JobseekerData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser ? currentUser : null);
+
+      // If user is logged in and has a UID, fetch jobseeker data
+      if (currentUser) {
+        setIsLoading(true);
+      setError(null);
+      try {
+        const jobseekerDoc = await getDoc(doc(db, "Jobseeker", currentUser.uid));
+        if (jobseekerDoc.exists()) {
+          setJobseekerData(jobseekerDoc.data() as JobseekerData);
+        } else {
+          console.error("Jobseeker document not found for current user");
+        }
+      } catch (error) {
+        setError((error as Error).message);
+      } finally {
+        setIsLoading(false);
+      }
+      }
+    });
+
+    return unsubscribe; // Cleanup function to unsubscribe on unmount
+  }, [auth]);
+  const {
+    email = null,
+    first_name = null,
+    last_name = null,
+    gcsesPassed = null,
+    skills = [], // Initialize skills as an empty array if null
+    experience = null,
+    location = null,
+    summary = null,
+    role = 'Jobseeker',
+    educational_qualification = null,
+    education_level = null,
+  } = jobseekerData || {};
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut(); // Sign out the user from Firebase Authentication
+      console.log('User successfully logged out');
+      window.location.href = '/login'; // Redirect to login page (replace with your desired URL)
+    } catch (error) {
+      const typedError = error as Error;
+      console.error('Error logging out:', typedError);
+      // Handle specific errors (optional)
+    }
+  };
+  
   return (
     <>
-      <nav className="border-bottom" style={{ marginTop: "40px" }}></nav>
+      <nav className="border-bottom" style={{ marginTop: "40px" }}><button onClick={handleLogout}>Logout</button></nav>
       <div
         className="row"
         style={{ width: "auto", height: "80vh", margin: "50px" }}
@@ -24,10 +103,8 @@ export const JobSeekerHomePage = () => {
             }}
           >
             <span style={{ color: "#0086CA", fontSize: "20px" }}>
-              {fullName
-                .split(" ")
-                .map((word) => word.charAt(0))
-                .join("")}
+              {first_name?.charAt(0)} {last_name?.charAt(0)}
+                
             </span>
           </div>
           <span
@@ -38,7 +115,7 @@ export const JobSeekerHomePage = () => {
               // marginLeft: "20px",
             }}
           >
-            Darius Tron
+            {first_name} {last_name}
           </span>
 
           <div
@@ -62,7 +139,7 @@ export const JobSeekerHomePage = () => {
               marginTop: "5px",
             }}
           >
-            London
+            {location}
           </div>
           <div
             style={{
@@ -85,7 +162,7 @@ export const JobSeekerHomePage = () => {
               marginTop: "5px",
             }}
           >
-            trondarius13@gmail.com
+           {email}
           </div>
           <div
             className="border-top"
@@ -103,7 +180,7 @@ export const JobSeekerHomePage = () => {
               Skills
             </div>
             <div className="d-flex flex-wrap">
-              {skills.map((skill, index) => (
+              {skills.map((skill: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
                 <div
                   className="border "
                   key={index}
@@ -147,16 +224,7 @@ export const JobSeekerHomePage = () => {
                 color: "#4A4A4A",
               }}
             >
-              Been working as a lead consultancy in RealEstate for last 5 years.
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions.
+              {summary}
             </span>
             <span
               style={{
@@ -169,128 +237,26 @@ export const JobSeekerHomePage = () => {
             >
               Work History
             </span>
-            <div
-              className="row border"
-              style={{ width: "450px", paddingBottom: "15px", height: "auto" }}
-            >
-              <span
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "12px",
-                  marginTop: "15px",
-                }}
-              >
-                Job title
-              </span>
-              <input
-                type="text"
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  width: "200px",
-                }}
-              ></input>
-              <span
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "12px",
-                  marginTop: "15px",
-                }}
-              >
-                Position
-              </span>
-              <input
-                type="text"
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  width: "200px",
-                }}
-              ></input>
-              <span
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "12px",
-                  marginTop: "15px",
-                }}
-              >
-                Employer Name
-              </span>
-              <input
-                type="text"
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  width: "200px",
-                }}
-              ></input>
-              <span
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "12px",
-                  marginTop: "15px",
-                }}
-              >
-                Location
-              </span>
-              <input
-                type="text"
-                style={{
-                  color: "#1A4F6E",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  width: "200px",
-                }}
-              ></input>
-              <div className="row">
-                <span
-                  className="col"
-                  style={{
-                    color: "#1A4F6E",
-                    fontSize: "12px",
-                    marginTop: "15px",
-                  }}
-                >
-                  Start Date
-                </span>
-                <input
-                  type="date"
-                  style={{
-                    color: "#1A4F6E",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    width: "200px",
-                  }}
-                ></input>
-                <span
-                  className="row"
-                  style={{
-                    color: "#1A4F6E",
-                    fontSize: "12px",
-                    marginTop: "15px",
-                    marginLeft: "15px",
-                  }}
-                >
-                  End Date
-                </span>
-                <input
-                  type="date"
-                  style={{
-                    color: "#1A4F6E",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    width: "200px",
-                  }}
-                ></input>
-              </div>
-            </div>
+            <WorkHistory/>
+
+            <hr></hr>
+           
           </div>
         </div>
         <div className="bg-green" style={{ width: "35%" }}>
-          heyy
+        <span
+              style={{
+                color: "#0086CA",
+                fontWeight: "bold",
+                fontSize: "16px",
+                marginBottom: "15px",
+                marginTop: "30px",
+              }}
+            >
+              Education History
+            </span>
+            <EducationHistory/>
+          
         </div>
       </div>
     </>
