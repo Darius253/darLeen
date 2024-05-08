@@ -7,6 +7,9 @@ import { EducationHistory } from './EducationHistory';
 import {jsPDF} from 'jspdf';
 
 
+
+
+
 interface JobseekerData {
   email: string;
   first_name?: string;
@@ -21,7 +24,7 @@ interface JobseekerData {
   education_level?:string,
   uid: string; // User ID from Firebase authentication
 }
-export const JobSeekerHomePage = () => {
+export const PreviewPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [jobseekerData, setJobseekerData] = useState<JobseekerData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,15 +84,32 @@ export const JobSeekerHomePage = () => {
     }
   };
 
-  const downloadPDF = () => {
+//   const downloadPDF = () => {
+
+    
+
+
+//       // Image is loaded, now generate the PDF
+//       const element = document.getElementById("pdf-container");
+//       if (element) {
+//         html2pdf(element, {
+//           margin: 10,
+//           filename: `${first_name}${last_name}_CV.pdf`,
+//           image: { type: "jpeg", quality: 0.98 },
+//           html2canvas: { scale: 2, useCORS: true },
+//           jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+//         });
+  
+//     };
+//   };
+const downloadPDF = () => {
 
     const divToConvert = document.getElementById('pdf-container'); // Replace with your div ID
     if (divToConvert) { // Check if the div exists
         const htmlContent = divToConvert.innerHTML;
-        const scCont=scaleHTMLContent(htmlContent,0.8);
     
         const doc = new jsPDF();
-        doc.html(scCont, {
+        doc.html(htmlContent, {
           callback: function (pdf) {
             pdf.save(`${first_name}${last_name}.pdf`);
           }
@@ -100,15 +120,9 @@ export const JobSeekerHomePage = () => {
       }
   };
   
-  function scaleHTMLContent(htmlString: string, scaleFactor: number): string {
-    // Implement logic to modify element styles or dimensions in the HTML string
-    // This example uses a simple approach for demonstration purposes
-    const scaledHTML = htmlString.replace(/(\d+)px/g, (match) => {
-      const value = parseInt(match, 10);
-      return `${value * scaleFactor}px`;
-    });
-    return scaledHTML;
-  }
+
+
+  
   return (
     <>
       <nav className="border-bottom" style={{ marginTop: "40px" }}><button onClick={handleLogout}>Logout</button></nav>
