@@ -98,7 +98,7 @@ export const PostedJobs = () => {
                     where("educational_qualification", "==", education_qualification),
                     where("location", "==", location),
                     where("skills", "array-contains-any", skills),
-                    where("experience", "==", professional_qualification),
+                    // where("experience", "==", professional_qualification),
                     where("sector", "==", sector),
                     where("gcsesPassed", ">=", gcsesPassed),
                     where("yearsofexperience", ">=", yearsofexperience)

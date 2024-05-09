@@ -71,9 +71,9 @@ export const FindCandidates = () => {
     if (minEducationLevels) {
       searchCriteria.push(where('education_level', '==', minEducationLevels)); // Check if education array includes the specified level
     }
-    if (professionalQualification) {
-        searchCriteria.push(where('experience', '==', professionalQualification)); // Check if education array includes the specified level
-      }
+    // if (professionalQualification) {
+    //     searchCriteria.push(where('experience', '==', professionalQualification)); // Check if education array includes the specified level
+    //   }
       if (location) {
         searchCriteria.push(where('location', '==', location)); // Check if education array includes the specified level
       }

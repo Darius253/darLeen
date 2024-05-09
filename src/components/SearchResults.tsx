@@ -118,7 +118,7 @@ export const SearchResults = (props: Props) => {
               >
                 Shortlist Candidate
               </button>
-              <Link to=''> <button
+              <Link to='/homepage/jobseeker'> <button
                 className="border"
                 style={{
                   borderRadius: "25px",
