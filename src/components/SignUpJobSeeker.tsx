@@ -214,7 +214,6 @@ export const SignUpJobSeeker = () => {
                   placeholder="Years of experience"
                   aria-label="Years of experience"
                   required
-                  value=""
                   ref={yearsofexperienceRef}
                 />
               </div>
@@ -250,7 +249,6 @@ export const SignUpJobSeeker = () => {
                   aria-label="Professional Qualification"
                   id="proQualification"
                   ref={experienceRef}
-                  required
                 />
               </div>
             </div>
@@ -286,6 +284,7 @@ export const SignUpJobSeeker = () => {
                   className="form-control"
                   placeholder="Job Title"
                   aria-label="Job Tile"
+                  ref={job_titleRef}
                   required
                 />
               </div>
