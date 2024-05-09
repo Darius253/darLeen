@@ -214,7 +214,6 @@ export const SignUpJobSeeker = () => {
                   placeholder="Years of experience"
                   aria-label="Years of experience"
                   required
-                  value=""
                   ref={yearsofexperienceRef}
                 />
               </div>

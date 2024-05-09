@@ -131,7 +131,6 @@ export const Login = () => {
                   backgroundColor: "#0086CA",
                   width: "360px",
                 }}
-                onClick={() => setIsLoading(true)}
               >
                 Log in
               </button>
