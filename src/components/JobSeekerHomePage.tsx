@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { getDoc, doc } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { db } from '../firebase/BaseConfig'; // Import from firebaseConfig.js
-import { WorkHistory } from './WorkHistory';
-import { EducationHistory } from './EducationHistory';
-import {jsPDF} from 'jspdf';
-
+import React, { useState, useEffect } from "react";
+import { getDoc, doc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { db } from "../firebase/BaseConfig"; // Import from firebaseConfig.js
+import { WorkHistory } from "./WorkHistory";
+import { EducationHistory } from "./EducationHistory";
+import { jsPDF } from "jspdf";
 
 interface JobseekerData {
   email: string;
@@ -17,16 +16,17 @@ interface JobseekerData {
   location?: string;
   summary?: string;
   role?: string;
-  educational_qualification?:string,
-  education_level?:string,
+  educational_qualification?: string;
+  education_level?: string;
   uid: string; // User ID from Firebase authentication
 }
 export const JobSeekerHomePage = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [jobseekerData, setJobseekerData] = useState<JobseekerData | null>(null);
+  const [jobseekerData, setJobseekerData] = useState<JobseekerData | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
 
   const auth = getAuth();
 
@@ -37,19 +37,21 @@ export const JobSeekerHomePage = () => {
       // If user is logged in and has a UID, fetch jobseeker data
       if (currentUser) {
         setIsLoading(true);
-      setError(null);
-      try {
-        const jobseekerDoc = await getDoc(doc(db, "Jobseeker", currentUser.uid));
-        if (jobseekerDoc.exists()) {
-          setJobseekerData(jobseekerDoc.data() as JobseekerData);
-        } else {
-          console.error("Jobseeker document not found for current user");
+        setError(null);
+        try {
+          const jobseekerDoc = await getDoc(
+            doc(db, "Jobseeker", currentUser.uid)
+          );
+          if (jobseekerDoc.exists()) {
+            setJobseekerData(jobseekerDoc.data() as JobseekerData);
+          } else {
+            console.error("Jobseeker document not found for current user");
+          }
+        } catch (error) {
+          setError((error as Error).message);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        setError((error as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
       }
     });
 
@@ -64,7 +66,7 @@ export const JobSeekerHomePage = () => {
     experience = null,
     location = null,
     summary = null,
-    role = 'Jobseeker',
+    role = "Jobseeker",
     educational_qualification = null,
     education_level = null,
   } = jobseekerData || {};
@@ -72,34 +74,34 @@ export const JobSeekerHomePage = () => {
   const handleLogout = async () => {
     try {
       await auth.signOut(); // Sign out the user from Firebase Authentication
-      console.log('User successfully logged out');
-      window.location.href = '/login'; // Redirect to login page (replace with your desired URL)
+      console.log("User successfully logged out");
+      window.location.href = "/login"; // Redirect to login page (replace with your desired URL)
     } catch (error) {
       const typedError = error as Error;
-      console.error('Error logging out:', typedError);
+      console.error("Error logging out:", typedError);
       // Handle specific errors (optional)
     }
   };
 
   const downloadPDF = () => {
+    const divToConvert = document.getElementById("pdf-container"); // Replace with your div ID
+    if (divToConvert) {
+      // Check if the div exists
+      const htmlContent = divToConvert.innerHTML;
+      const scCont = scaleHTMLContent(htmlContent, 0.5);
 
-    const divToConvert = document.getElementById('pdf-container'); // Replace with your div ID
-    if (divToConvert) { // Check if the div exists
-        const htmlContent = divToConvert.innerHTML;
-        const scCont=scaleHTMLContent(htmlContent,0.8);
-    
-        const doc = new jsPDF();
-        doc.html(scCont, {
-          callback: function (pdf) {
-            pdf.save(`${first_name}${last_name}.pdf`);
-          }
-        });
-      } else {
-        // Handle the case where the div is not found
-        console.error('Div element with the provided ID not found!');
-      }
+      const doc = new jsPDF();
+      doc.html(scCont, {
+        callback: function (pdf) {
+          pdf.save(`${first_name}${last_name}.pdf`);
+        },
+      });
+    } else {
+      // Handle the case where the div is not found
+      console.error("Div element with the provided ID not found!");
+    }
   };
-  
+
   function scaleHTMLContent(htmlString: string, scaleFactor: number): string {
     // Implement logic to modify element styles or dimensions in the HTML string
     // This example uses a simple approach for demonstration purposes
@@ -111,7 +113,25 @@ export const JobSeekerHomePage = () => {
   }
   return (
     <>
-      <nav className="border-bottom" style={{ marginTop: "40px" }}><button onClick={handleLogout}>Logout</button></nav>
+      <nav
+        className="border-bottom d-flex justify-content-end"
+        style={{ marginTop: "40px" }}
+      >
+        <button
+          onClick={handleLogout}
+          style={{
+            marginBottom: "10px",
+            marginRight: "20px",
+            borderRadius: "17.5px",
+            backgroundColor: "red",
+            color: "white",
+            border: "none",
+          }}
+        >
+          Logout
+        </button>
+      </nav>
+
       <div
         className="row"
         style={{ width: "auto", height: "80vh", margin: "50px" }}
@@ -134,7 +154,6 @@ export const JobSeekerHomePage = () => {
           >
             <span style={{ color: "#0086CA", fontSize: "20px" }}>
               {first_name?.charAt(0)} {last_name?.charAt(0)}
-                
             </span>
           </div>
           <span
@@ -192,7 +211,7 @@ export const JobSeekerHomePage = () => {
               marginTop: "5px",
             }}
           >
-           {email}
+            {email}
           </div>
           <div
             className="border-top"
@@ -210,32 +229,60 @@ export const JobSeekerHomePage = () => {
               Skills
             </div>
             <div className="d-flex flex-wrap">
-              {skills.map((skill: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
-                <div
-                  className="border "
-                  key={index}
-                  style={{
-                    color: "white",
-                    width: "auto",
-                    borderColor: "#E8E8E8",
-                    backgroundColor: "#013C5E",
-                    borderRadius: "17px",
-                    margin: "0px 4px 4px 0px",
-                    textAlign: "center",
-                    padding: "5px",
-                    fontWeight: "normal",
-                  }}
-                >
-                  {skill}
-                </div>
-              ))}
+              {skills.map(
+                (
+                  skill:
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                        any,
+                        string | React.JSXElementConstructor<any>
+                      >
+                    | Iterable<React.ReactNode>
+                    | React.ReactPortal
+                    | null
+                    | undefined,
+                  index: React.Key | null | undefined
+                ) => (
+                  <div
+                    className="border "
+                    key={index}
+                    style={{
+                      color: "white",
+                      width: "auto",
+                      borderColor: "#E8E8E8",
+                      backgroundColor: "#013C5E",
+                      borderRadius: "17px",
+                      margin: "0px 4px 4px 0px",
+                      textAlign: "center",
+                      padding: "5px",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    {skill}
+                  </div>
+                )
+              )}
             </div>
-            <button onClick={downloadPDF}>Download CV</button>
+            <button
+              onClick={downloadPDF}
+              style={{
+                marginTop: "50px",
+                borderRadius: "17px",
+                backgroundColor: "white",
+                color: "#0086CA",
+                borderColor: "#0086CA",
+                padding: "10px",
+              }}
+            >
+              Download CV
+            </button>
           </div>
         </div>
         <div className="border-end" style={{ width: "50%" }}>
           <div
-            className="row"
+            className="row "
             style={{ marginLeft: "50px", marginRight: "50px" }}
           >
             <span
@@ -268,26 +315,24 @@ export const JobSeekerHomePage = () => {
             >
               Work History
             </span>
-            <WorkHistory/>
+            <WorkHistory />
 
             <hr></hr>
-           
           </div>
         </div>
         <div className="bg-green" style={{ width: "35%" }}>
-        <span
-              style={{
-                color: "#0086CA",
-                fontWeight: "bold",
-                fontSize: "16px",
-                marginBottom: "15px",
-                marginTop: "30px",
-              }}
-            >
-              Education History
-            </span>
-            <EducationHistory/>
-          
+          <span
+            style={{
+              color: "#0086CA",
+              fontWeight: "bold",
+              fontSize: "16px",
+              marginBottom: "15px",
+              marginTop: "30px",
+            }}
+          >
+            Education History
+          </span>
+          <EducationHistory />
         </div>
       </div>
     </>

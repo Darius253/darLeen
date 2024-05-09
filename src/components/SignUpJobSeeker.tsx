@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import ImageSrc from "../assets/login.jpg";
-import { createUserWithEmailAndPassword, updateProfile,sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase/BaseConfig';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+} from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase/BaseConfig";
 import { useRef, useState } from "react";
 
 export const SignUpJobSeeker = () => {
@@ -11,17 +15,17 @@ export const SignUpJobSeeker = () => {
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const gcsesPassedRef = useRef<HTMLInputElement>(null); // Ref for GCSEs Passed
-const skillsRef = useRef<HTMLInputElement>(null); // Ref for all skills (can be an array later)
-const experienceRef = useRef<HTMLInputElement>(null);
-const locationRef = useRef<HTMLInputElement>(null);
-const summaryRef = useRef<HTMLTextAreaElement>(null);
-const yearsofexperienceRef = useRef<HTMLInputElement>(null);
-const education_levelRef=useRef<HTMLSelectElement>(null);
-const education_qualificationRef=useRef<HTMLInputElement>(null);
-const job_titleRef=useRef<HTMLInputElement>(null);
-const sectorRef=useRef<HTMLInputElement>(null);
-  const roleRef=useRef("Jobseeker");
-   // Ref object for first and last name
+  const skillsRef = useRef<HTMLInputElement>(null); // Ref for all skills (can be an array later)
+  const experienceRef = useRef<HTMLInputElement>(null);
+  const locationRef = useRef<HTMLInputElement>(null);
+  const summaryRef = useRef<HTMLTextAreaElement>(null);
+  const yearsofexperienceRef = useRef<HTMLInputElement>(null);
+  const education_levelRef = useRef<HTMLSelectElement>(null);
+  const education_qualificationRef = useRef<HTMLInputElement>(null);
+  const job_titleRef = useRef<HTMLInputElement>(null);
+  const sectorRef = useRef<HTMLInputElement>(null);
+  const roleRef = useRef("Jobseeker");
+  // Ref object for first and last name
   const [isLoading, setIsLoading] = useState(false);
   const [signupError, setSignupError] = useState<string | null>(null);
 
@@ -37,23 +41,27 @@ const sectorRef=useRef<HTMLInputElement>(null);
     const last_name = lastNameRef.current!.value;
     const gcsesPassed = gcsesPassedRef.current!.value;
     const skills = skillsRef.current!.value.split(",");
-    const experience=experienceRef.current!.value;
-    const location=locationRef.current!.value;
-    const summary=summaryRef.current!.value;
-    const yearsofexperience=yearsofexperienceRef.current!.value;
-    const education_level=education_levelRef.current!.value;
-    const educational_qualification=education_qualificationRef.current!.value;
-    const job_title=job_titleRef.current!.value;
-    const sector=sectorRef.current!.value;
+    const experience = experienceRef.current!.value;
+    const location = locationRef.current!.value;
+    const summary = summaryRef.current!.value;
+    const yearsofexperience = yearsofexperienceRef.current!.value;
+    const education_level = education_levelRef.current!.value;
+    const educational_qualification = education_qualificationRef.current!.value;
+    const job_title = job_titleRef.current!.value;
+    const sector = sectorRef.current!.value;
 
-    const role=roleRef.current;
+    const role = roleRef.current;
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       // Update user profile (optional)
-      await updateProfile(user, { displayName: `${first_name} ${last_name}` });  // Combine for display name
+      await updateProfile(user, { displayName: `${first_name} ${last_name}` }); // Combine for display name
 
       // Create document in Jobseeker collection with user ID
       await setDoc(doc(db, "Users", user.uid), {
@@ -66,11 +74,11 @@ const sectorRef=useRef<HTMLInputElement>(null);
         uid: user.uid,
         gcsesPassed: parseInt(gcsesPassed), // Assuming numerical value
         skills,
-        yearsofexperience:parseInt(yearsofexperience),
-        educational_qualification:educational_qualification,
-        education_level:education_level,
-        job_title:job_title,
-        sector:sector,
+        yearsofexperience: parseInt(yearsofexperience),
+        educational_qualification: educational_qualification,
+        education_level: education_level,
+        job_title: job_title,
+        sector: sector,
         experience,
         location,
         summary,
@@ -79,17 +87,19 @@ const sectorRef=useRef<HTMLInputElement>(null);
       await sendEmailVerification(user);
 
       // Show message indicating verification email sent
-      alert('A verification email has been sent to your address. Please verify to proceed.');
+      alert(
+        "A verification email has been sent to your address. Please verify to proceed."
+      );
 
       // Redirect to login page after successful signup
-      window.location.href = '/login'; // Replace with your login page path
+      window.location.href = "/login"; // Replace with your login page path
     } catch (error) {
       const typedError = error as Error; // Assert error as type Error
       setSignupError(typedError.message);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
   const handleSelectChange = () => {
     const selectedValue = education_levelRef.current!.value;
     console.log(selectedValue); // Output the selected option value
@@ -257,7 +267,12 @@ const sectorRef=useRef<HTMLInputElement>(null);
                 />
               </div>
               <div className="col">
-                <select className="form-control" required ref={education_levelRef} onChange={handleSelectChange}>
+                <select
+                  className="form-control"
+                  required
+                  ref={education_levelRef}
+                  onChange={handleSelectChange}
+                >
                   <option>A Levels</option>
                   <option>O Levels</option>
                   <option>Masters</option>
@@ -332,7 +347,7 @@ const sectorRef=useRef<HTMLInputElement>(null);
               </button>
             </div>
 
-           
+            {isLoading === false && (
               <button
                 type="submit"
                 className="btn btn"
@@ -348,7 +363,18 @@ const sectorRef=useRef<HTMLInputElement>(null);
               >
                 Sign Up
               </button>
-          
+            )}
+            {isLoading === true && (
+              <div className="d-flex justify-content-center">
+                <div
+                  className="spinner-border "
+                  role="status"
+                  style={{ color: "#0086CA" }}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
 
             <div style={{ marginLeft: "40%", marginTop: "50px" }}>
               <a style={{ fontSize: "15px", color: "#4A4A4A" }}>

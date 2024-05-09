@@ -1,14 +1,18 @@
+/* This code snippet is a TypeScript React component called `CompanyHomePage`. It represents the user
+interface for a company's home page where they can perform various actions related to managing
+candidates and job postings. Here's a breakdown of what the code is doing: */
 import { FindCandidates } from "./FindCandidates";
 import { useState } from "react";
 import { PostedJobs } from "./PostedJobs";
 import { PostJob } from "./PostJob";
-import { Link } from "react-router-dom";
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { getAuth, } from 'firebase/auth';
 
 export const CompanyHomePage = () => {
   const [activeTab, setActiveTab] = useState(1);
   const auth=getAuth();
   const handleLogout = async () => {
+   /* This block of code is handling the logout functionality in the `CompanyHomePage` component.
+   Here's a breakdown of what it does: */
     try {
       await auth.signOut(); // Sign out the user from Firebase Authentication
       console.log('User successfully logged out');

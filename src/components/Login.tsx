@@ -1,10 +1,12 @@
+/* This code snippet is a TypeScript React component for a login form. Here's a breakdown of what it
+does: */
 import { Link } from "react-router-dom";
 import ImageSrc from "../assets/login.jpg";
-import React, { useState, useRef } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom'; // For navigation after login
-import { getDoc, doc } from 'firebase/firestore';
-import { db,auth } from '../firebase/BaseConfig';
+import React, { useState, useRef } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom"; // For navigation after login
+import { getDoc, doc } from "firebase/firestore";
+import { db, auth } from "../firebase/BaseConfig";
 
 export const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -15,7 +17,7 @@ export const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-    console.log("yres")
+    console.log("yes");
 
     setIsLoading(true);
     setLoginError(null); // Clear previous errors
@@ -24,30 +26,36 @@ export const Login = () => {
     const password = passwordRef.current!.value;
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("Working");
 
-    // User is successfully logged in
-    const userId = userCredential.user.uid;
-    const userRef = doc(db, 'Users', userId); // Reference the user document
+      // User is successfully logged in
+      const userId = userCredential.user.uid;
+      const userRef = doc(db, "Users", userId); // Reference the user document
 
-    const userDocSnap = await getDoc(userRef);
-    if (userDocSnap.exists()) {
-      const userData = userDocSnap.data();
-      const role = userData.role;
+      const userDocSnap = await getDoc(userRef);
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const role = userData.role;
 
-      if (role === 'Jobseeker') {
-        navigate('/homepage/jobseeker'); // Navigate to Jobseeker dashboard
-      } else if (role === 'Recruiter') {
-        navigate('/homepage/company'); // Navigate to Staff dashboard
+        if (role === "Jobseeker") {
+          navigate("/homepage/jobseeker"); // Navigate to Jobseeker dashboard
+        } else if (role === "Recruiter") {
+          navigate("/homepage/company"); // Navigate to Staff dashboard
+        } else {
+          console.warn("Unrecognized user role:", role); // Handle unexpected role
+        }
       } else {
-        console.warn('Unrecognized user role:', role); // Handle unexpected role
-      }
-    } else {
-      console.error('User document not found'); // Handle missing user document
-    } // Replace with your dashboard page path
+        console.error("User document not found"); // Handle missing user document
+      } // Replace with your dashboard page path
     } catch (error) {
       const typedError = error as Error; // Assert error as type Error
       setLoginError(typedError.message);
+      console.log("error");
     } finally {
       setIsLoading(false);
     }
@@ -84,6 +92,7 @@ export const Login = () => {
                 placeholder="Email"
                 ref={emailRef}
                 size={36}
+                required
               />
             </div>
 
@@ -95,6 +104,7 @@ export const Login = () => {
                 placeholder="Password"
                 ref={passwordRef}
                 size={36}
+                required
               />
             </div>
             <div style={{ marginBottom: "30px", marginTop: "30px" }}>
@@ -109,7 +119,7 @@ export const Login = () => {
                 Forgot Password?
               </button>
             </div>
-    
+            {isLoading === false && (
               <button
                 type="submit"
                 className="btn btn"
@@ -121,10 +131,23 @@ export const Login = () => {
                   backgroundColor: "#0086CA",
                   width: "360px",
                 }}
+                onClick={() => setIsLoading(true)}
               >
                 Log in
               </button>
-            
+            )}
+
+            {isLoading === true && (
+              <div className="d-flex justify-content-center">
+                <div
+                  className="spinner-border "
+                  role="status"
+                  style={{ color: "#0086CA" }}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
 
             <div style={{ marginLeft: "90px", marginTop: "100px" }}>
               <a style={{ fontSize: "15px", color: "#4A4A4A" }}>

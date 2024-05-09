@@ -1,9 +1,7 @@
 import { SearchResults } from "./SearchResults";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { collection, query, where, getDocs,doc,getDoc } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { db } from '../firebase/BaseConfig';
-import { Link } from 'react-router-dom';
 
 
   interface JobseekerData {
@@ -38,7 +36,6 @@ export const FindCandidates = () => {
   const [skill, setSkill] = useState('');
   const [location, setLocation] = useState('');
   const [searchResults, setSearchResults] = useState<JobseekerData[]>([]);
-  const auth = getAuth();
   const matchingJobseekerIds = new Set();
   const handleSearch = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
@@ -119,6 +116,10 @@ export const FindCandidates = () => {
 
   
  
+/* The above code is a form component in a TypeScript React application. It allows users to input
+search criteria for job candidates based on various parameters such as preferred job title,
+education level, qualifications, skills, experience, location, and sector. When the user submits the
+form by clicking the "Search" button, it triggers the `handleSearch` function. */
 
   return (
     <div className="row" style={{ margin: "30px" }}>
