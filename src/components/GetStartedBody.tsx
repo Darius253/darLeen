@@ -36,7 +36,7 @@ export const Body = () => {
               </button>
             </Link>
 
-            <Link to="/login">
+            <Link to="/signup/jobseeker">
               <button
                 type="button"
                 className="btn btn-primary"

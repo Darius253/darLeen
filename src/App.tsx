@@ -1,6 +1,12 @@
 import Image from "./assets/image1.jpg";
 import GetStarted from "./components/GetStarted";
 
+/**
+ * The App component renders a background image with blur effect and a GetStarted component in a
+ * centered row.
+ * @returns The App component is being returned, which contains a div with a background image and a
+ * GetStarted component inside a row with text aligned to the start.
+ */
 function App() {
   return (
     <div className="position-relative overflow-hidden">
